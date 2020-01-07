@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="MXPlanningToolCSS.css">
+    <link rel="stylesheet" href="jquery-ui.structure.min.css">
+    <link rel="stylesheet" href="jquery-ui.theme.min.css">
+
+</head>
+<body onload="populateSqdDropdown()">
+<div id = 'settingsModal' class="modal">
+    <section id="detSettings">
+    <button id="loadDetButton" onclick="loadDet()">
+        LOAD DET
+    </button>
+        <div id="detStartDate" class="settingsModalGeneral">
+        <p>Detachment Start Date: <input type="text" id="detStartDatePicker"></p>
+    </div>
+    <div id="detEndDate" class="settingsModalGeneral">
+        <p>Detachment End Date: <input type="text" id="detEndDatePicker"></p>
+    </div>
+    <div id="detLocation" class="settingsModalGeneral">
+        <p>Detachment Location:<input type="text" id="detachmentLocationInput"></p>
+    </div>
+    <div id="detName" class="settingsModalGeneral">
+        <p>Detachment Name:<input type="text" id="detachmentNameInput"> </p>
+    </div>
+    </section>
+
+
+
+
+    <section id="bunoDroppable" class="settingsModalGeneral">
+        <br>
+        Drag BUNOS Here to Add to DET
+    </section>
+
+    <section id="bunoDraggables">
+    <div id="draggableBunoLabel">
+        BUNOS Available for DET
+    </div>
+
+    </section>
+
+</div>
+<div id="contextMenu">
+
+        <button id="showOpsspinners" onclick="showOpsCalendar()">Adjust Ops Calendar</button>
+        <br>
+        <button>OTHER FUNCTION</button>
+        <button> OTHER FUNCTION 2</button>
+
+</div>
+<section class="homepagecontainter">
+    <section class="top_nav">
+        <section id="topBanner">
+            Maintenance Planning Tool
+        </section>
+        <button id="settingsBtn" onclick="showBottomModal()">
+            Create Detachment
+        </button>
+        <button id="finished" onclick="closeModal()">
+            Finished
+        </button>
+        <button id="showOpsCalendar" onclick="showOpsCalendar()">
+            Show Ops Calendar
+        </button>
+        <button id="hideOpsCalendar" onclick = "hideOpsCalendar()">
+            Close Ops Calendar
+        </button>
+    </section>
+    <section class="footer">
+        Test
+    </section>
+    <section id ="sideNav">
+    <div id="accordion">
+        <h3 id="maintenanceItemsArea">Maintenance Items Being Performed</h3>
+            <h3 id="maintenanceItemList">
+
+            </h3>
+        <h3>Aircraft on DET</h3>
+            <h3> BUNOS WILL GO HERE</h3>
+        <h3>Other Next Section</h3>
+            <h3>other other</h3>
+        <h3>other other Next Section</h3>
+            <h3>Other Other</h3>
+    </div>
+
+    </section>
+    <section class="body">
+        <section id="filters">
+            <button type="button" onclick="testFunction
+            ()">sdsd</button>
+
+            Filters Go Here
+        </section>
+        <section id="calendar" class="body">
+            <section id="mxDisplay">
+            </section>
+            <section id="opsCalendarLabel">
+                <button id="hideAndSave" onclick="hideOpsCalendar()">Save Ops Settings</button>
+            </section>
+            <section id="opsCalendarspinners">
+            </section>
+            <section id="calendar_display">
+            </section>
+            <div id="buno_label">
+                <br>BUNO
+            </div>
+            <section id="buno_display">
+            </section>
+        </section>
+        <section class="squadron_emblem">
+            <section class="squadron_emblem_picture">
+                <img src="f18.jpg" id="sqd_image">
+
+            </section>
+            <section class="squadron_data">
+                <section class="aircraft_in_mx">
+                    AIRCRAFT DOWN FOR MAINTENANCE
+                    <div id = "aircraft_in_mx_out">
+                        -
+                    </div>
+                </section>
+                <section class="aircraft_det">
+                    AIRCRAFT ON DET<br>
+                    <div id="aircraft_det_output">
+                        -
+                    </div>
+                </section>
+                <section class = 'aircraft_opsneed'>
+                    AIRCRAFT NEEDED FOR OPS <br>
+                    <div id="aircraft_ops_need_output">
+                        -
+                    </div>
+                </section>
+                <section class="mc_aircraft_today">
+                    MC AIRCRAFT TODAY<br>
+                    <div id="mc_aircraft_output">
+                        -
+                    </div>
+                </section>
+                <section class="squadron_dropdown">
+                <select id="squadron_select" onchange="switchsquadron()">
+                    <option value="" disabled="disabled" selected="selected">Please select a Squadron</option>
+                </select>
+                </section>
+                <section class ="assigned_aircraft">
+                    NUMBER OF ASSIGNED AIRCRAFT<br>
+                    <div id="assigned_aircraft_output">
+                        -
+
+                    </div>
+
+                </section>
+            </section>
+        </section>
+    </section>
+</section>
+</body>
+<script src="homepagefunctions.js"></script>
+<script src="moment.min.js"></script>
+<script src="Jquery.js"></script>
+<script src="jquery-ui.min.js"></script>
+</script>
+</html>

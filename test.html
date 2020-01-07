@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        function showHint(str) {
+            if (str.length == 0) {
+                document.getElementById("txtHint").innerHTML = "";
+                return;
+            } else {
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        document.getElementById("txttest").innerHTML ='HEY'+ this.responseText;
+                    }
+                };
+                xmlhttp.open("GET", "testthree.php?q=" + str, true);
+                xmlhttp.send();
+            }
+        }
+    </script>
+
+</head>
+<body>
+<p><b>Start typing a name in the input field below:</b></p>
+<form>
+    First name: <input type="text" onkeyup="showHint(this.value)">
+</form>
+<p>Suggestions: <span id="txtHint">SHOULD HAVE NOTHING</span></p>
+<span id="txttest"></span>
+</body>
+</html>
