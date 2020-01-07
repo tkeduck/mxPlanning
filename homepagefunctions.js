@@ -34,14 +34,18 @@ function switchsquadronData() {
     xhttp.send(JSON.stringify(squadron_string));
     loadOpsDetails()
     $('#opsCalendarspinners').html('');
+
 }
 //Need to be able to dynamically populate the SQD select to allow for other TMS
 function populateSqdDropdown(){
     var xhttp = new XMLHttpRequest();
+    $('#sqd_image').data('lastBUNOSelected','ss');
     instantiateBunoDroppable();
     hideOpsCalendar();
+
     $('#accordion').accordion();
     $('#accordion').accordion("option", "autoHeight", false);
+    instantiateBUNOMXDatePickers();
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             output_array = new Array();
@@ -85,10 +89,10 @@ function populatecalendar(){
             for (i = 0; i < loop_counter; ++i) {
                 newnode = document.getElementById("buno_display");
                 newnode.insertAdjacentHTML("beforeend", '<div class="bunodiv" data-value ='
-                    + output_array[i][0] + ' id = ' + output_array[i][0] + 'onclick= "getid()" > <br>'
+                    + output_array[i][0] + ' id = ' + output_array[i][0] + ' onclick= "populateAccordion()" > <br>'
                     + output_array[i][0] + '</div>');
                 detachmentNodeBunos.append('<div class="bunodivDraggable" data-value ='
-                    + output_array[i][0] + ' id =BUNO'+i + /*output_array[i][0] +*/ ' onclick= "getid()" ><br>'
+                    + output_array[i][0] + ' id =BUNO'+i + /*output_array[i][0] +*/ ' onclick= "" ><br>'
                     + output_array[i][0] + '</div>');
                 $('#BUNO'+i/*+output_array[i][0]*/+'').data('BUNO', output_array[i][0]);
                 $('.bunodivDraggable').draggable({snap:'#bunoDroppable'});
@@ -201,13 +205,8 @@ function getid(){
     $('#aircraft_in_mx_out').html(aircraftDownMX);
     var spinner = $('#spinner'+idNumber).spinner();
     let opsNeededPlanes = spinner.val();
-    //console.log($('#sqd_image').data('lastClickedId'));
     let lastId = $('#sqd_image').data('lastClickedId');
-    //lastId = '#date'+lastId;
-    //lastId = String(lastId)
-    console.log(lastId);
     $('#date'+idnumber2).css('color', 'Yellow');
-    //$('#date'+idnumber2).css('background-color', 'green');
     $('#date'+lastId).css('color', 'white');
     $('#sqd_image').data('lastClickedId', idnumber2);
     $('#aircraft_ops_need_output').html(opsNeededPlanes);
@@ -240,7 +239,7 @@ function getid(){
             let mxitemnumber = $('#date' + idnumber2).data('mxitem' + i + buno);
             if(mxitemnumber>0) {
                 let mxname=mxNameArray[mxitemnumber];
-                $("#MIL"+buno).append('<div>'+mxname+'</div><br>');
+                $("#MIL"+buno).append('<div>&emsp;'+mxname+'</div><br>');
             }
         }
     }
@@ -260,7 +259,7 @@ function addDates() {
         if(i<0){
             className = 'pastDays'
         }
-        if(dateConverted.getDay() == 5 || dateConverted.getDay() ==6){
+        if(dateConverted.getDay() == 5 && i>0 || dateConverted.getDay() ==6 && i>0){
             className = 'weekend'
         } else if (i<= 0){
             className = 'pastDays'
@@ -269,7 +268,7 @@ function addDates() {
             className = 'calendarDate'
         }
         if(i==-2){
-            weekdayName = moment(todayDateTwo-1).format('dddd');
+            weekdayName = moment(todayDateTwo).format('dddd');
         }
         $('#opsCalendarspinners').append('<input id="spinner'+i+'" name="opsAc'+i+'">');
         $('#spinner'+i).spinner();
@@ -305,7 +304,7 @@ function dateDblClick(){
     confirm()
 }
 function showBottomModal() {
-    //var bottomModal = document.getElementById("bottomModal");
+
     var modal= document.getElementById("settingsModal");
     modal.style.display = "grid";
 
@@ -322,26 +321,7 @@ $("#bunoDroppable").droppable({
         let draggableId = ui.draggable.attr('id');
         let BUNO = ui.draggable.attr('data-value');
         $('#loadDetButton').data(draggableId,BUNO);
-        //let numBunos = $('#date1').data('assignedAcft')
-        //let bunoToEnter = 0
-        //console.log(numBunos);
-        /*for(j = 0; j<numBunos; ++j) {
-            let bunoTest = $('#loadDetButton').data('BUNO'+j)
-            //let j=2;
-            if(bunoTest !== undefined){
-                alert(bunoTest)
-                bunoToEnter=parseInt($('#loadDetButton').data('BUNO'+j));
-                //console.log(typeof parseInt($('#loadDetButton').data('BUNO'+j)));
-            }
-            if(bunoToEnter!==0){
-                console.log(bunoToEnter);
-            }
-        }*/
-        //console.log(ui.draggable.attr('data-value'));
-        //let i=2
-        //console.log($('#loadDetButton').data('BUNO'+i))
-        //console.log(typeof $('#loadDetButton').data('DET2132456'));
-        //droppedBunos();
+
     }
 });
 $("#detStartDatePicker").datepicker();
@@ -381,11 +361,10 @@ let bunoToEnter = 0
 }
 
 function showOpsCalendar(){
-    //$('#opsCalendarLabel').show();
     $('#opsCalendarLabel').css('display', 'flex');
     $('#opsCalendarspinners').css('display', 'flex');
     hideMenu();
-    //$('#opsCalendarspinners').show();
+
 }
 function hideOpsCalendar(){
     $('#opsCalendarLabel').hide();
@@ -406,7 +385,7 @@ $('#contextMenu').css({
 
 $('#contextMenu').show();
 setTimeout(hideMenu, 2000);
-//$('#contextMenu').delay(300).hide();
+
 return false;
 
 }
@@ -414,11 +393,7 @@ function hideMenu(){
     $('#contextMenu').hide();
 }
 function testFunction(){
-    //var spinner = $('#spinner1').spinner();
-    //alert(spinner.val());//spinner().spinner('opsAc-2'));
-    //saveOpsDetails()
-    loadOpsDetails()
-    //$('#spinner1').spinner().val(5);
+    $('#twentyEightDayPicker').datepicker('setDate', '1/1/2020')
 }
 function loadOpsDetails(){
     let squadronName = squadron_select.value;
@@ -428,9 +403,12 @@ function loadOpsDetails(){
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             let outputArray = JSON.parse(xhttp.responseText);
-            for(i = 0; i<35; ++i){
-                var spinner = $('#spinner'+i).spinner().val(outputArray[i][2]);
-
+            for(i = 1; i<38; ++i){
+                var spinner = $('#spinner'+i).spinner().val(outputArray[i-1][2]);
+                if(i==1){
+                    var spinner = $('#spinner1').spinner().val(outputArray[0][2]);
+                    console.log('got here')
+                }
             }
         }
 
@@ -447,10 +425,10 @@ function saveOpsDetails(){
     //todayDate = moment()
     opsNeedArray[0]= squadronName;
     let j =1;
-    for( i = 1; i<35; ++i){
+    for( i = 1; i<38; ++i){
         var spinner = $('#spinner'+i).spinner();
         opsNeedArray[i]= spinner.val();
-        opsNeedArray[i+34] = todayDate;
+        opsNeedArray[i+37] = todayDate;
         //opsNeedArray[36]=12;//todayDate;
         todayDate = moment().add(j, 'days').format('YYYY-MM-DD');
         ++j;
@@ -468,4 +446,89 @@ function saveOpsDetails(){
     xhttp.open("POST", "opsLoadData.php", true);
     xhttp.send(JSON.stringify(opsNeedArray));
 
+}
+function instantiateBUNOMXDatePickers(){
+    for(x=2; x<11; ++x){
+        $('#datePicker'+x).datepicker();
+        /*
+        $('#twentyEightDayPicker').datepicker();
+        $('#eightyFourDayPicker').datepicker();
+        $('#oneTwelveDayPicker').datepicker();
+        $('#oneSixEightDayPicker').datepicker();
+        $('#threeThreeSixDayPicker').datepicker();
+        $('#threeSixFiveDayPicker').datepicker();
+        $('#sevenTwentyEightDayPicker').datepicker();
+         */
+    }
+}
+function populateAccordion(){
+    populateBUNOModInfo();
+    populateBUNOMXInfo();
+    highlightSelectedBUNO();
+}
+
+function highlightSelectedBUNO(){
+    let bunoSelected= event.target.id;
+    $('#'+bunoSelected).css('background-color', 'tan');
+    $('#'+bunoSelected).css('color', 'black');
+    let lastBUNOSelected=$('#sqd_image').data('lastBUNOSelected');
+    $('#sqd_image').data('lastBUNOSelected', bunoSelected);
+    $('#'+lastBUNOSelected).css('background-color', '#404040');
+    $('#'+lastBUNOSelected).css('color', 'white');
+
+
+}
+function populateBUNOModInfo(){
+
+}
+function populateBUNOMXInfo(){
+    let bunoSelected = event.target.id;
+    $('#selectedBunoMXDisplay').html('Displaying MX Data for BUNO:'+bunoSelected);
+    let stringToSend = JSON.stringify(bunoSelected);
+    let xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            let response = JSON.parse(xhttp.responseText);
+            for( x = 2; x<10; ++x) {
+                let dateToBeConverted = response[0][x];
+                //console.log(fourteenDay);
+                //let dateConverted = fourteenDay.replace(/-/g,'/');
+                let newYear = dateToBeConverted.slice(0, 4);
+                let newMonth = dateToBeConverted.slice(5, 7);
+                let newDay = dateToBeConverted.slice(8, 10);
+                let newDate = newMonth + '/' + newDay + '/' + newYear;
+                //console.log(newDate);
+                //console.log(fourteenDay);
+                $('#datePicker'+x).datepicker('setDate', newDate)
+            }
+        }
+    }
+    xhttp.open("POST", "mxDataRetrieve.php", true);
+    xhttp.send(JSON.stringify(bunoSelected));
+    //xhttp.setRequestHeader("Content-type", "application/json");
+}
+function saveNewMXDates() {
+    let bunoSelected = $('#sqd_image').data('lastBUNOSelected');
+    let xhttp = new XMLHttpRequest();
+    let arrayToSend = new Array();
+    arrayToSend[0] = bunoSelected;
+    arrayToSend[1] = squadron_select.value;
+    for(x = 2; x<10; ++x) {
+        let dateToBeConverted= $('#datePicker'+x).val();
+        let newYear = dateToBeConverted.slice(6, 10);
+        let newMonth = dateToBeConverted.slice(0,2 );
+        let newDay = dateToBeConverted.slice(3, 5);
+        let newDate = newYear + '-' + newMonth + '-' + newDay;
+        arrayToSend[x] = newDate;//$('#datePicker'+x).val();
+        //console.log(arrayToSend)
+    }
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            let response = JSON.parse(xhttp.responseText);
+            console.log(response);
+        }
+    }
+    xhttp.open("POST", "saveNewMXDates.php", true);
+    xhttp.send(JSON.stringify(arrayToSend));
+    switchsquadron();
 }

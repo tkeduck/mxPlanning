@@ -9,11 +9,11 @@ $numberNeeded = array();
 $squadronName = $cleanData[0];
 $sql = "DELETE FROM opsRequirement WHERE squadronName='$squadronName'";
 mysqli_query($conn,$sql);
-for($x = 1; $x<35;$x++) {
+for($x = 0; $x<38;$x++) {
     $sql = "INSERT INTO opsRequirement (squadronName, dateOps, numberAcftNeed) VALUES ('$squadronName','$dateOps','$numberAcftNeed')";
 
 
-    $offsetter = $x+ 36;
+    $offsetter = $x+ 38;
     $dateOps = $cleanData[$offsetter];
     $numberAcftNeed = $cleanData[$x];
     mysqli_query($conn,$sql);
