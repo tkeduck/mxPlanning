@@ -262,6 +262,15 @@ Homepage Styling
     height: auto;
     border: 12px;
 }
+.todayDate{
+    width: 100px;
+    background-color: lightseagreen;
+    height: 50px;
+    border: solid;
+    border-color:black;
+    text-align: center;
+    color: white;
+}
 .squadron_emblem_picture{
     grid-area: squadron_emblem_picture;
     max-height: 230px;

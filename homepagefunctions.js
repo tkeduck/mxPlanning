@@ -42,7 +42,10 @@ function populateSqdDropdown(){
     $('#sqd_image').data('lastBUNOSelected','ss');
     instantiateBunoDroppable();
     hideOpsCalendar();
-
+    $('.calendarSortable').sortable({
+        //revert: true,
+        axis: 'x'
+    });
     $('#accordion').accordion();
     $('#accordion').accordion("option", "autoHeight", false);
     instantiateBUNOMXDatePickers();
@@ -105,6 +108,11 @@ function populatecalendar(){
                         $("#date"+e).data('Buno'+i, buno)
                     }
                 for (j = -2; j < 36; ++j) {
+                    if(j==-2) {
+                        $('#mxDisplay').append("<div id =MXInfo" + buno + " ></div>");
+                        $('#MXInfo'+buno).sortable()
+                    }
+
                     mxEventsDueArray = [];
                     let output_string = "NO-MX";
                     className = "calendarElement";
@@ -150,8 +158,8 @@ function populatecalendar(){
                         mcCounter[j+2] += 1;
 
                     }
-                    newnode = document.getElementById("mxDisplay");
-                    newnode.insertAdjacentHTML("beforeend", '<div class =' + className + ' ><br>'
+                    newnode = document.getElementById("MXInfo"+buno);
+                    newnode.insertAdjacentHTML("beforeend", '<div id ='+buno+j+' class =' + className + ' ><br>'
                         + output_string + '</div>');
                     todayDate = moment().add(j, 'days').format('YYYY-MM-DD');
 
@@ -174,6 +182,7 @@ function populatecalendar(){
             }
 
         };
+
 
 
     xhttp.open("POST", "calendarquery.php", true);
@@ -239,7 +248,7 @@ function getid(){
             let mxitemnumber = $('#date' + idnumber2).data('mxitem' + i + buno);
             if(mxitemnumber>0) {
                 let mxname=mxNameArray[mxitemnumber];
-                $("#MIL"+buno).append('<div>&emsp;'+mxname+'</div><br>');
+                $("#MIL"+buno).append('<div>&emsp;'+mxname+'</div>');
             }
         }
     }
@@ -264,7 +273,10 @@ function addDates() {
         } else if (i<= 0){
             className = 'pastDays'
 
-        }else{
+        }else if (i==1){
+            className = 'todayDate'
+        }
+        else{
             className = 'calendarDate'
         }
         if(i==-2){
@@ -393,7 +405,11 @@ function hideMenu(){
     $('#contextMenu').hide();
 }
 function testFunction(){
-    $('#twentyEightDayPicker').datepicker('setDate', '1/1/2020')
+    //$('.calendarElement').draggable();
+$('.calendarSortable').sortable({
+    disabled: true
+})
+    //$('#twentyEightDayPicker').datepicker('setDate', '1/1/2020')
 }
 function loadOpsDetails(){
     let squadronName = squadron_select.value;
