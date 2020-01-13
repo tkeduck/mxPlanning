@@ -32,7 +32,7 @@ function switchsquadronData() {
     xhttp.setRequestHeader("Content-type", "application/json");
     //xhttp.send(json_encode(squadron_string));
     xhttp.send(JSON.stringify(squadron_string));
-    loadOpsDetails()
+    loadOpsDetails();
     $('#opsCalendarspinners').html('');
 
 }
@@ -42,10 +42,9 @@ function populateSqdDropdown(){
     $('#sqd_image').data('lastBUNOSelected','ss');
     instantiateBunoDroppable();
     hideOpsCalendar();
-    $('.calendarSortable').sortable({
-        //revert: true,
+    /*$('.calendarSortable').sortable({
         axis: 'x'
-    });
+    });*/
     $('#accordion').accordion();
     $('#accordion').accordion("option", "autoHeight", false);
     instantiateBUNOMXDatePickers();
@@ -82,7 +81,6 @@ function populatecalendar(){
             }
             let output_array = new Array();
             output_array = JSON.parse(xhttp.responseText);
-            //console.log(output_array);
             var newnode = document.getElementById("buno_display");
             let detachmentNodeBunos = $('#bunoDraggables');
             var loop_counter = output_array.length;
@@ -109,8 +107,8 @@ function populatecalendar(){
                     }
                 for (j = -2; j < 36; ++j) {
                     if(j==-2) {
-                        $('#mxDisplay').append("<div id =MXInfo" + buno + " ></div>");
-                        $('#MXInfo'+buno).sortable()
+                        $('#mxDisplay').append("<div class='overallSortable' id =MXInfo" + buno + " ></div>");
+
                     }
 
                     mxEventsDueArray = [];
@@ -159,9 +157,35 @@ function populatecalendar(){
 
                     }
                     newnode = document.getElementById("MXInfo"+buno);
+
                     newnode.insertAdjacentHTML("beforeend", '<div id ='+buno+j+' class =' + className + ' ><br>'
                         + output_string + '</div>');
                     todayDate = moment().add(j, 'days').format('YYYY-MM-DD');
+                    console.log(dayCounter);
+                     if(className == 'longMxCalendarElement' && dayCounter == 0){
+                        v = j;
+                        k = j-1;
+                        l = j-2;
+                        m = j-3;
+                        n = j-4;
+                        o= j-5;
+                        p= j-6;
+                        $("#"+buno+k+",#"+buno+v+',#'+buno+l).wrapAll("<span id =MXItem"+buno+j+" class='emptySpanMX'/>");
+                        //$("#"+buno+k+",#"+buno+v+',#'+buno+l+",#"+buno+m).wrapAll("<span id =MXItem"+buno+j+j+" class='emptySpan'/>");
+                        $("#MXItem"+buno+j+",#"+buno+m+",#"+buno+n+",#"+buno+o+",#"+buno+p).wrapAll("<span id =MXItem"+buno+j+j+" class='emptySpan'/>");
+                        //$('.emptySpan').children().html('MW')
+                        /*for(z==6;z>=0; --z){
+
+                        }*/
+
+                        //$("#"+buno+j).after("</span>");
+                    }
+
+
+                    //$("#"+buno+j).addClass('sortableMXEvent')
+                    //$(".sortableMXEvent").sortable();
+                    //$(".longMxCalenderElement").addClass('sortableMXEvent')
+
 
                 }
                 newnode.insertAdjacentHTML("beforeend", '<br>');
@@ -181,6 +205,28 @@ function populatecalendar(){
 
             }
 
+        /*$(".emptySpanMX").draggable({
+            axis:'x',
+            containment: 'parent',
+            connectToSortable: '.emptySpan'
+        });*/
+        $(".emptySpan").sortable({
+            helper: 'clone',
+            forceHelperSize: true,
+            axis: 'x',
+            placeholder: 'sortable-placeholder',
+            revert: true
+
+        });
+        $("#mxDisplay").sortable({
+            helper: 'clone',
+            forceHelperSize: true,
+            axis: 'y',
+            placeholder: 'sortable-placeholder',
+            revert: true
+
+        });
+        $(".emptySpan").children().css("background-color","#303030")
         };
 
 
@@ -405,11 +451,15 @@ function hideMenu(){
     $('#contextMenu').hide();
 }
 function testFunction(){
-    //$('.calendarElement').draggable();
-$('.calendarSortable').sortable({
-    disabled: true
-})
-    //$('#twentyEightDayPicker').datepicker('setDate', '1/1/2020')
+
+  function Person(name){
+      this.name = name;
+    }
+let john = new Person('John')
+    alert(john.name)
+
+
+
 }
 function loadOpsDetails(){
     let squadronName = squadron_select.value;
@@ -548,3 +598,4 @@ function saveNewMXDates() {
     xhttp.send(JSON.stringify(arrayToSend));
     switchsquadron();
 }
+

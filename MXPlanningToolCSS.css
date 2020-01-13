@@ -125,6 +125,8 @@ Homepage Styling
     grid-area: mx_display;
     display: inline-block;
     white-space: nowrap;
+    overflow-x: scroll;
+    overflow-y: scroll;
 }
 #buno_display{
     color: white;
@@ -211,6 +213,16 @@ Homepage Styling
     display: inline-block;
     color: white;
     text-align: center;
+}
+.emptySpan{
+    display: inline-block;
+}
+.sortable-placeholder{
+    background-color: green;
+    display: inline-block;
+    content: url("arrow.png");
+    width: 100px;
+    height: 100px;
 }
 .calendarDate{
     width: 100px;
