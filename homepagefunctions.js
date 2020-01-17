@@ -451,14 +451,14 @@ function hideMenu(){
     $('#contextMenu').hide();
 }
 function testFunction(){
-
+/*
   function Person(name){
       this.name = name;
     }
 let john = new Person('John')
     alert(john.name)
-
-
+*/
+$('#178954').css('display', 'none')
 
 }
 function loadOpsDetails(){
